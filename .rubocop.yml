@@ -1,0 +1,21 @@
+require:
+  - standard/cop/semantic_blocks
+  - rubocop-rspec
+
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  Exclude:
+    - 'bin/*'
+  DisplayCopNames: true
+  TargetRubyVersion: 2.4
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
