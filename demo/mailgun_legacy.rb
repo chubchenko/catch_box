@@ -23,11 +23,11 @@ module Mailgun
     end
 
     def call(payload, env)
-      payload["signature"]["signature"] == \
+      payload["signature"] == \
         ::OpenSSL::HMAC.hexdigest(
           ::OpenSSL::Digest::SHA256.new,
           api_key,
-          [payload["signature"]["timestamp"], payload["signature"]["token"]].join
+          [payload["timestamp"], payload["token"]].join
         )
     end
 
@@ -39,7 +39,7 @@ module Mailgun
   class Fanout
     extend ::CatchBox::Fanout
 
-    event "event-data.event"
+    event "event"
 
     auth ::Mailgun::Auth.new
 

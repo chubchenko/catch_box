@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# frozen_string_literal: trues
 
 RSpec.describe CatchBox::Fanout do
   let(:app) do
