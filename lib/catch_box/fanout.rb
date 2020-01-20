@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 require "dry-configurable"
+require "catch_box/event"
+require "catch_box/auth"
 require "catch_box/on"
 require "catch_box/emitter"
 
@@ -17,8 +21,11 @@ module CatchBox
         extend ::Dry::Configurable
         prepend ::CatchBox::Fanout::Initialize
 
+        setting :event, ::CatchBox::Event.new
+        setting :auth, ::CatchBox::Auth.new
+
         setting :on, ::CatchBox::On.new
-        setting :emit, ::CatchBox::Emit.new
+        setting :emitter, ::CatchBox::Emitter.new
 
         def config
           self.class.config
@@ -30,11 +37,22 @@ module CatchBox
       descendant.class_eval do
         extend ::Dry::Configurable
 
+        setting :event, ::CatchBox::Event.new
+        setting :auth, ::CatchBox::Auth.new
+
         setting :on, ::CatchBox::On.new
         setting :emitter, ::CatchBox::Emitter.new
 
         @_fanout = []
       end
+    end
+
+    def event(callable = nil, &block)
+      config.event.call(callable || block)
+    end
+
+    def auth(callable = nil, &block)
+      config.auth.call(callable || block)
     end
 
     def on(pattern, callable = nil, &block)
@@ -49,7 +67,11 @@ module CatchBox
       )
     end
 
-    def emit(pattern, payload)
+    def emit(payload, env)
+      config.auth.map(payload, env)
+
+      pattern = config.event.map(payload)
+
       config.emitter.call(
         _fanout, pattern, payload
       )

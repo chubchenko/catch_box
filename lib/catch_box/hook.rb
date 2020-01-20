@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CatchBox
   class Hook
     def initialize(hook)
@@ -8,6 +10,8 @@ module CatchBox
       @hook.call(payload)
     end
 
-    def match?(pattern); end
+    def match?(pattern)
+      false
+    end
   end
 end

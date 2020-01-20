@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "catch_box/hook/all"
 require "catch_box/hook/one"
 

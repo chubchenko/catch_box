@@ -5,5 +5,4 @@ require "catch_box/fanout"
 require "catch_box/middleware"
 
 module CatchBox
-  class Error < StandardError; end
 end

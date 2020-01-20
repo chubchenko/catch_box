@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module CatchBox
   class Emitter
     def call(fanout, pattern, payload)
-      fanout.select do |hook|
+      fanout.select { |hook|
         hook.match?(pattern)
-      end.each do |hook|
+      }.each do |hook|
         hook.call(payload)
       end
     end
