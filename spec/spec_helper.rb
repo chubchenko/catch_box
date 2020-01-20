@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require "simplecov"
+
 require "bundler/setup"
 require "catch_box"
+
+require "rack/test"
+
+Dir.glob(File.expand_path("support/**/*.rb", __dir__), &method(:require))
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -13,4 +19,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.include(Rack::Test::Methods)
 end

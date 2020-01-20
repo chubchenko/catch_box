@@ -1,0 +1,65 @@
+{
+  "signature": {
+    "timestamp": "1499697910",
+    "token": "b5751a49a024483da8d41c3684f98b8f",
+    "signature": "374e0b1a3deeb57318c783d43ff71093fbf26406a452761dab91bf346a93b49e"
+  },
+  "event-data": {
+    "tags": [
+      "my_tag_1",
+      "my_tag_2"
+    ],
+    "timestamp": 1521472262.908181,
+    "storage": {
+      "url": "https://se.api.mailgun.net/v3/domains/sandboxfb0641fa1b904bb28ba00cba62dca7f1.mailgun.org/messages/message_key",
+      "key": "message_key"
+    },
+    "envelope": {
+      "sending-ip": "209.61.154.250",
+      "sender": "bob@sandboxfb0641fa1b904bb28ba00cba62dca7f1.mailgun.org",
+      "transport": "smtp",
+      "targets": "alice@example.com"
+    },
+    "recipient-domain": "example.com",
+    "id": "CPgfbmQMTCKtHW6uIWtuVe",
+    "campaigns": [
+
+    ],
+    "user-variables": {
+      "my_var_1": "Mailgun Variable #1",
+      "my-var-2": "awesome"
+    },
+    "flags": {
+      "is-routed": false,
+      "is-authenticated": true,
+      "is-system-test": false,
+      "is-test-mode": false
+    },
+    "log-level": "info",
+    "message": {
+      "headers": {
+        "to": "Alice <alice@example.com>",
+        "message-id": "20130503182626.18666.16540@sandboxfb0641fa1b904bb28ba00cba62dca7f1.mailgun.org",
+        "from": "Bob <bob@sandboxfb0641fa1b904bb28ba00cba62dca7f1.mailgun.org>",
+        "subject": "Test delivered webhook"
+      },
+      "attachments": [
+
+      ],
+      "size": 111
+    },
+    "recipient": "alice@example.com",
+    "event": "delivered",
+    "delivery-status": {
+      "tls": true,
+      "mx-host": "smtp-in.example.com",
+      "attempt-no": 1,
+      "description": "",
+      "session-seconds": 0.4331989288330078,
+      "utf8": true,
+      "code": 250,
+      "message": "OK",
+      "certificate-verified": true
+    }
+  }
+}
