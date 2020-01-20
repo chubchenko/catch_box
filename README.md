@@ -64,14 +64,14 @@ end
 > Use middleware
 
 ```ruby
-require 'sinatra/base'
-require 'catch_box/middleware'
+require "sinatra/base"
+require "catch_box/middleware"
 
 class Application < Sinatra::Base
-  use ::CatchBox::Middleware, fanout: Fanout, endpoint: '/mailgun'
+  use ::CatchBox::Middleware, fanout: Fanout, endpoint: "/mailgun"
 
-  get '/' do
-    'index'
+  get "/" do
+    "index"
   end
 end
 ```
