@@ -1,34 +1,80 @@
-# CatchBox
+[![Gem Version](https://badge.fury.io/rb/catch_box.svg)](https://badge.fury.io/rb/catch_box)
+[![RSpec](https://github.com/chubchenko/catch_box/workflows/RSpec/badge.svg)](https://github.com/chubchenko/catch_box/actions)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/catch_box`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Catch Box
 
-TODO: Delete this and the text above, and describe your gem
+A lightweight and straightforward system for easy hooks set up.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
-gem 'catch_box'
+gem "catch_box", "~> 0.1.0"
 ```
 
 And then execute:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install catch_box
+```bash
+bundle
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Base
 
-## Development
+> Define fanout
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+require "catch_box/fanout"
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+class Delivered
+  def initialize(logger: Logger.new)
+    @logger = logger
+  end
+
+  def call(payload)
+    @logger.info(payload)
+  end
+end
+
+class Fanout
+  extend ::CatchBox::Fanout
+
+  event "event-data.event"
+
+  auth do |payload, env|
+    # https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
+    payload["signature"]["signature"] == \
+      ::OpenSSL::HMAC.hexdigest(
+        ::OpenSSL::Digest::SHA256.new,
+        ENV["MAILGUN_API_KEY"],
+        [payload["signature"]["timestamp"], payload["signature"]["token"]].join
+      )
+  end
+
+  on "delivered", Delivered.new
+
+  all do |payload|
+    ::Logger.new(::STDOUT).info(payload)
+  end
+end
+```
+
+> Use middleware
+
+```ruby
+require 'sinatra/base'
+require 'catch_box/middleware'
+
+class Application < Sinatra::Base
+  use ::CatchBox::Middleware, fanout: Fanout, endpoint: '/mailgun'
+
+  get '/' do
+    'index'
+  end
+end
+```
 
 ## Contributing
 
@@ -36,4 +82,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/chubch
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
