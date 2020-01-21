@@ -11,3 +11,4 @@
 /gemfiles/*.lock
 /.rspec_status
 .DS_Store
+/*.gem
